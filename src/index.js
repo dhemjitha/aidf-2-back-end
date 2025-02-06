@@ -172,13 +172,13 @@ app.put("/:hotelId", (req, res) => {
     }
 
     if (
-        !hotel.name ||
-        !hotel.location ||
-        !hotel.rating ||
-        !hotel.reviews ||
-        !hotel.image ||
-        !hotel.price ||
-        !hotel.description
+        !updatedHotel.name ||
+        !updatedHotel.location ||
+        !updatedHotel.rating ||
+        !updatedHotel.reviews ||
+        !updatedHotel.image ||
+        !updatedHotel.price ||
+        !updatedHotel.description
     ) {
        res.status(400).json({
            message: "Please enter all the required fields",
