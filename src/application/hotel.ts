@@ -2,6 +2,7 @@ import Hotel from "../infrastructure/schemas/Hotel";
 import { Request, Response, NextFunction } from "express";
 import NotFoundError from "../domain/errors/not-found-error";
 import ValidationError from "../domain/errors/validation-error";
+import { CreateHotelDTO } from "../domain/dtos/hotel";
 
 export const getAllHotels = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,25 +30,20 @@ export const getHotelById = async (req: Request, res: Response, next: NextFuncti
 
 export const createHotel = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const hotel = req.body;
+        const hotel = CreateHotelDTO.safeParse(req.body);
 
-        if (
-            !hotel.name ||
-            !hotel.location ||
-            !hotel.image ||
-            !hotel.price ||
-            !hotel.description
-        ) {
-            throw new ValidationError("Invalid hotel data");
+        if (!hotel.success) {
+            throw new ValidationError(hotel.error.message);
         }
 
         await Hotel.create({
-            name: hotel.name,
-            location: hotel.location,
-            image: hotel.image,
-            price: parseInt(hotel.price),
-            description: hotel.description
+            name: hotel.data.name,
+            location: hotel.data.location,
+            image: hotel.data.image,
+            price: parseInt(hotel.data.price),
+            description: hotel.data.description,
         });
+
         res.status(201).send();
         return;
     } catch (error) {

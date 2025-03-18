@@ -7,8 +7,7 @@ const bookingSchema = new mongoose.Schema({
         required: true,
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
         required: true,
     },
     checkIn: {
@@ -26,4 +25,5 @@ const bookingSchema = new mongoose.Schema({
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
+
 export default Booking;
